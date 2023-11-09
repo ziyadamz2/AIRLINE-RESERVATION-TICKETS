@@ -81,25 +81,25 @@ class bookingapp:
         self.arrival_airport = customtkinter.StringVar()
         self.arrival_airport.set("Select Arrival Airport")
         self.arrival_airport = customtkinter.CTkComboBox(self.frame,values=airport,border_width=2,variable=self.arrival_airport,width=200,border_color="#77B5FE",button_color="#77B5FE")
-        self.arrival_airport.place(relx=0.1, rely=0.4, anchor=tkinter.CENTER)
+        self.arrival_airport.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
         
         self.departure_airport = customtkinter.StringVar()
         self.departure_airport.set("Select Departure Airport") 
         self.departure_airport = customtkinter.CTkComboBox(self.frame,values=airport,border_width=2,variable=self.departure_airport,width=200,border_color="#77B5FE",button_color="#77B5FE")
-        self.departure_airport.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
+        self.departure_airport.place(relx=0.1, rely=0.4, anchor=tkinter.CENTER)
         
         self.Class = customtkinter.StringVar()
         self.Class.set("Select Class")
         self.Class = customtkinter.CTkComboBox(self.frame,values=['Economy Class','First Class'],border_width=2,variable=self.Class,width=200,border_color="#77B5FE",button_color="#77B5FE")
         self.Class.place(relx=0.3, rely=0.7, anchor=tkinter.CENTER)
         
-
+        """"
         self.my_departue_date = tb.DateEntry(self.frame, bootstyle="danger",firstweekday=0, startdate=date(2023, 2, 14))
         self.my_departue_date.pack(relx=0.3, rely=0.7, anchor=tkinter.CENTER)
         
         self.my_arrival_date = tb.DateEntry(self.frame, bootstyle="danger",firstweekday=0, startdate=date(2023, 2, 14))
         self.my_arrival_date.pack(relx=0.3, rely=0.6, anchor=tkinter.CENTER)
-        
+        """
         
         self.frame_booking=customtkinter.CTkScrollableFrame(master=self.app, width=1200, height=500,border_color="#77B5FE",fg_color="white")
         self.frame_booking.place(relx=0.5, rely=0.65, anchor=tkinter.CENTER)
