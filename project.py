@@ -3,6 +3,9 @@ import customtkinter
 from tkinter import * 
 from PIL import Image
 import tkinter
+import ttkbootstrap as tb
+from datetime import date
+from ttkbootstrap.dialogs import Querybox
 customtkinter.set_appearance_mode("light")
 
 
@@ -90,7 +93,12 @@ class bookingapp:
         self.Class = customtkinter.CTkComboBox(self.frame,values=['Economy Class','First Class'],border_width=2,variable=self.Class,width=200,border_color="#77B5FE",button_color="#77B5FE")
         self.Class.place(relx=0.3, rely=0.7, anchor=tkinter.CENTER)
         
+
+        self.my_departue_date = tb.DateEntry(self.frame, bootstyle="danger",firstweekday=0, startdate=date(2023, 2, 14))
+        self.my_departue_date.pack(relx=0.3, rely=0.7, anchor=tkinter.CENTER)
         
+        self.my_arrival_date = tb.DateEntry(self.frame, bootstyle="danger",firstweekday=0, startdate=date(2023, 2, 14))
+        self.my_arrival_date.pack(relx=0.3, rely=0.6, anchor=tkinter.CENTER)
         
         
         self.frame_booking=customtkinter.CTkScrollableFrame(master=self.app, width=1200, height=500,border_color="#77B5FE",fg_color="white")
