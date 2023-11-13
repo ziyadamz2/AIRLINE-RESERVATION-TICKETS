@@ -6,6 +6,10 @@ import tkinter
 from typing import Union, Callable
 from ttkbootstrap.dialogs import Querybox
 import pymysql
+from CTkMessagebox import CTkMessagebox
+from tkinter import messagebox
+
+
 customtkinter.set_appearance_mode("light")
 conn = pymysql.connect(host='localhost',user='root',password="",db='project_oop')
 cur = conn.cursor()
@@ -111,14 +115,16 @@ class login_gui:
 
         
     def Login(self):
-        
-        for widget in self.frame.winfo_children():
-            widget.destroy()
-        self.frame.destroy()
-        flight=mysqlconnect("select * from member_customer")
-        print(flight)
-        bookingapp(self.app)
-        
+        request_sql_connection="select * from member_customer where email='"+str(self.email.get())+"' and password='"+str(self.password.get())+"'"
+        user=mysqlconnect(request_sql_connection)
+        if len(user)==0:
+            messagebox.showerror('', 'Error: wrong email or password!')
+        else:
+            for widget in self.frame.winfo_children():
+                widget.destroy()
+            self.frame.destroy()
+            bookingapp(self.app)
+                
     def logiin_as_guest(self):
         
         for widget in self.frame.winfo_children():
@@ -141,6 +147,7 @@ class bookingapp:
         self.frame=customtkinter.CTkFrame(master=self.app, width=1222, height=200,border_color="#77B5FE",fg_color="white")
         self.frame.place(relx=0.5, rely=0.19, anchor=tkinter.CENTER)
         airport=["Paris", 
+                 "Londres",
                 "Madrid",
                 "Franckfort",
                 "Amsterdam",
@@ -177,25 +184,59 @@ class bookingapp:
         self.spinbox_1.place(relx=0.1, rely=0.7, anchor=tkinter.CENTER)
         #print(self.spinbox_1.get())
         
-        self.login=customtkinter.CTkButton(self.frame, text="SEARCH A FLIGHT",width=200,height=80,fg_color="red",font=("cursive",23 ),command=lambda:self.research())
-        self.login.place(relx=0.89, rely=0.58, anchor=tkinter.CENTER)
+        self.search=customtkinter.CTkButton(self.frame, text="SEARCH A FLIGHT",width=200,height=80,fg_color="red",font=("cursive",23 ),command=lambda:self.research())
+        self.search.place(relx=0.89, rely=0.58, anchor=tkinter.CENTER)
         
         
         self.frame_booking=customtkinter.CTkScrollableFrame(master=self.app, width=1200, height=500,border_color="#77B5FE",fg_color="white")
         self.frame_booking.place(relx=0.5, rely=0.65, anchor=tkinter.CENTER)
         
-    def research(self):
-        flight=mysqlconnect("select * from flight")
-        
-        
             
-        
-        
-    
-        
-        
-         
-        
+    def research(self):
+        if (str(self.departure_airport.get())=='' or str(self.arrival_airport.get())=='' or str(self.Class.get())=='Select Class' or str(self.my_departure_date.get())=='' or str(self.my_arrival_date.get())=='' or str(self.spinbox_1.get())=='None'):
+            messagebox.showerror('', 'Error: There is an empty entry area')
+        else:
+            for widget in self.frame_booking.winfo_children():
+                widget.destroy()
+            request_sql_departure="select * from flight where departure_airport='"+str(self.departure_airport.get())+"' and arrival_airport='"+str(self.arrival_airport.get())+"' and departing='"+str(self.my_departure_date.get())+"'"
+            flight_departure=mysqlconnect(request_sql_departure)
+            request_sql_arrival="select * from flight where departure_airport='"+str(self.arrival_airport.get())+"' and arrival_airport='"+str(self.departure_airport.get())+"' and departing='"+str(self.my_arrival_date.get())+"'"
+            flight_arrival=mysqlconnect(request_sql_arrival)
+            i=0
+            if len(flight_departure)==0:
+                self.no_result = customtkinter.CTkLabel(self.frame_booking, text="No Result For Outward Flight", text_color="black",font=("cursive",25 ), fg_color="transparent")
+                self.no_result.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
+                self.bar = customtkinter.CTkFrame(self.frame_booking,width=360,height=4,corner_radius=10,border_width=5, border_color="grey",fg_color="grey")
+                self.bar.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+            else:
+                self.info_flight = customtkinter.CTkLabel(self.frame_booking, text="Outward Flight", text_color="black",font=("cursive",25 ), fg_color="transparent")
+                self.info_flight.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
+                self.bar = customtkinter.CTkFrame(self.frame_booking,width=180,height=4,corner_radius=10,border_width=5, border_color="grey",fg_color="grey")
+                self.bar.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+                for flight in flight_departure:
+                    print(flight)
+                    self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                    self.frame_flight.grid(row=i, column=0, padx=10, pady=47)
+                    self.book=customtkinter.CTkButton(self.frame_flight, text="Book",width=200,height=25,corner_radius=0,fg_color="red",font=("cursive",13 ),border_width=1)
+                    self.book.place(relx=0.906, rely=0.3, anchor=tkinter.CENTER)
+                    self.price=customtkinter.CTkButton(self.frame_flight, text=str(flight[6])+"£",width=200,height=25,corner_radius=0,fg_color="white",font=("cursive",13 ),border_width=1,text_color="black")
+                    self.price.place(relx=0.906, rely=0.7, anchor=tkinter.CENTER)
+                    
+                    self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                    self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                    self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text="From  depart 7:00:00 ", text_color="black",font=("cursive",25 ),fg_color="transparent")
+                    self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+
+            
+                    i=i+1
+            """        
+            if len(flight_arrival)==0:
+                self.no_result = customtkinter.CTkLabel(self.frame_booking, text="No Result For Return Flight", text_color="black",font=("cursive",25 ), fg_color="transparent")
+                self.no_result.place(relx=0.5, rely=(len(flight_departure)*0.9), anchor=tkinter.CENTER)
+                self.bar = customtkinter.CTkFrame(self.frame_booking,width=320,height=4,corner_radius=10,border_width=5, border_color="grey",fg_color="grey")
+                self.bar.place(relx=0.5, rely=(len(flight_departure)*0.95), anchor=tkinter.CENTER)"""   
+
+                
 def main():
     app = tkinter.Tk()
     app1 = login_gui(app)
