@@ -4,7 +4,7 @@ from tkinter import *
 from PIL import Image
 import tkinter
 from typing import Union, Callable
-from ttkbootstrap.dialogs import Querybox
+
 import pymysql
 from CTkMessagebox import CTkMessagebox
 from tkinter import messagebox
@@ -20,11 +20,11 @@ def mysqlconnect(test):
 
 class FloatSpinbox(customtkinter.CTkFrame):
     def __init__(self, *args,
-                 width: int = 200,
-                 height: int = 32,
-                 step_size: Union[int, float] = 1,
-                 command: Callable = None,
-                 **kwargs):
+                width: int = 200,
+                height: int = 32,
+                step_size: Union[int, float] = 1,
+                command: Callable = None,
+                **kwargs):
         super().__init__(*args, width=width, height=height, **kwargs)
 
         self.step_size = step_size
@@ -107,7 +107,7 @@ class login_gui:
         self.login=customtkinter.CTkButton(self.frame, text="Login",width=120,fg_color="green",command=lambda:self.Login())
         self.login.place(relx=0.365, rely=0.58, anchor=tkinter.CENTER)
 
-        self.creat_an_account=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.creat_an_account())
+        self.creat_an_account=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.creat_account())
         self.creat_an_account.place(relx=0.64, rely=0.58, anchor=tkinter.CENTER)
 
         self.login_as_guest=customtkinter.CTkButton(self.frame, text="Login as a guest",command=lambda:self.logiin_as_guest())
@@ -115,22 +115,18 @@ class login_gui:
 
         
     def Login(self):
-        request_sql_connection="select * from member_customer where email='"+str(self.email.get())+"' and password='"+str(self.password.get())+"'"
-        request_sql_connection_employee="select * from employee where email='"+str(self.email.get())+"' and password='"+str(self.password.get())+"'"
+        request_sql_connection="select * from member where email='"+str(self.email.get())+"' and password='"+str(self.password.get())+"'"
         user=mysqlconnect(request_sql_connection)
-        employee=mysqlconnect(request_sql_connection_employee)
-        if len(user)==0 and len(employee):
+        if len(user)==0:
             messagebox.showerror('', 'Error: wrong email or password!')
-        elif len(employee)!=0:
+        else:                                           #A MODIFIER
             for widget in self.frame.winfo_children():
                 widget.destroy()
             self.frame.destroy()
-            #appel class pour l'employee
-        else:
-            for widget in self.frame.winfo_children():
-                widget.destroy()
-            self.frame.destroy()
+            #request_sql_permission="SELECT permission FROM member"
+            #if request_sql_permission==1:
             bookingapp(self.app)
+            #elif request_sql_permission==0: 
                 
     def logiin_as_guest(self):
         for widget in self.frame.winfo_children():
@@ -138,12 +134,13 @@ class login_gui:
         self.frame.destroy()
         bookingapp(self.app)
     
-    def creat_an_account(self):
+    def creat_account(self):
         
         for widget in self.frame.winfo_children():
             widget.destroy()
         self.frame.destroy()
-        #create a class to creat an account 
+        CreateAccountGui(self.app)
+        
 
 
 class bookingapp:
@@ -153,14 +150,14 @@ class bookingapp:
         self.frame=customtkinter.CTkFrame(master=self.app, width=1222, height=200,border_color="#77B5FE",fg_color="white")
         self.frame.place(relx=0.5, rely=0.19, anchor=tkinter.CENTER)
         airport=["Paris", 
-                 "London",
+                "London",
                 "Madrid",
                 "Franckfort",
                 "Amsterdam",
                 "Caire | CAI",
                 "Istanbul" ,
                 "Djibouti"
-                 ]
+                ]
 
         
         self.departure_airport = customtkinter.StringVar()
@@ -185,7 +182,7 @@ class bookingapp:
         self.my_arrival_date = customtkinter.CTkEntry(self.frame, placeholder_text="arrival date:yyyy-mm-dd",width=200,font=("cursive",15 ),border_color="#77B5FE",border_width=2)
         self.my_arrival_date.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
                 
-  
+
         self.spinbox_1 = FloatSpinbox(self.frame, width=140, step_size=1)
         self.spinbox_1.place(relx=0.1, rely=0.7, anchor=tkinter.CENTER)
         
@@ -292,10 +289,39 @@ class bookingapp:
     def booking(self):
         "Payment"
         return
-           
-           
-           
-           
+    
+
+class CreateAccountGui:
+
+    def __init__(self, app):
+        
+        self.app = app
+        self.frame = customtkinter.CTkFrame(master=self.app, width=400, height=300, corner_radius=10)
+        self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+        self.email_entry = customtkinter.CTkEntry(self.frame, placeholder_text="Email", width=250)
+        self.email_entry.place(relx=0.5, rely=0.3, anchor=tkinter.CENTER)
+        self.password_entry = customtkinter.CTkEntry(self.frame, placeholder_text="Password", show="*", width=250)
+        self.password_entry.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+        self.create_btn = customtkinter.CTkButton(self.frame, text="Create Account", command=self.create_account)
+        self.create_btn.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
+
+    '''def create_account(self):
+
+        cur.execute(f"SELECT * FROM member_customer WHERE email='{email}'")
+
+        if cur.rowcount > 0:
+            messagebox.showerror("Error", "User already exists!")
+            return
+
+        cur.execute(f"INSERT INTO member_customer (email, password) VALUES ('{email}', '{password}')")
+        conn.commit()
+        messagebox.showinfo("Success", "Account created successfully!")
+        conn.close()'''
+
+        
+        
+        
+        
                 
 def main():
     app = tkinter.Tk()
