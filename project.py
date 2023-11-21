@@ -4,7 +4,6 @@ from tkinter import *
 from PIL import Image
 import tkinter
 from typing import Union, Callable
-
 import pymysql
 from CTkMessagebox import CTkMessagebox
 from tkinter import messagebox
@@ -135,7 +134,6 @@ class login_gui:
         bookingapp(self.app)
     
     def creat_account(self):
-        
         for widget in self.frame.winfo_children():
             widget.destroy()
         self.frame.destroy()
@@ -295,32 +293,73 @@ class CreateAccountGui:
 
     def __init__(self, app):
         
-        self.app = app
-        self.frame = customtkinter.CTkFrame(master=self.app, width=400, height=300, corner_radius=10)
+        self.app =app
+
+        self.frame=customtkinter.CTkFrame(master=self.app, width=500, height=500,border_color="#77B5FE",fg_color="white")
         self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
-        self.email_entry = customtkinter.CTkEntry(self.frame, placeholder_text="Email", width=250)
-        self.email_entry.place(relx=0.5, rely=0.3, anchor=tkinter.CENTER)
-        self.password_entry = customtkinter.CTkEntry(self.frame, placeholder_text="Password", show="*", width=250)
-        self.password_entry.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
-        self.create_btn = customtkinter.CTkButton(self.frame, text="Create Account", command=self.create_account)
-        self.create_btn.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
 
-    '''def create_account(self):
+        self.msg=customtkinter.CTkLabel(master=self.frame, text="Creating account",compound="top",font=("Apple Chancery, cursive",30 ),text_color="blue")
+        self.msg.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
 
-        cur.execute(f"SELECT * FROM member_customer WHERE email='{email}'")
+        self.name = customtkinter.CTkEntry(self.frame, placeholder_text="Name",width=250, height=35,font=("cursive",15 ),border_color="#859BF5",border_width=3)
+        self.name.place(relx=0.5, rely=0.3, anchor=tkinter.CENTER)
+
+        self.email = customtkinter.CTkEntry(self.frame, placeholder_text="Email",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.email.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
+
+        self.password = customtkinter.CTkEntry(self.frame, placeholder_text="Password",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.password.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+
+        self.age = customtkinter.CTkEntry(self.frame, placeholder_text="Age",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.age.place(relx=0.5, rely=0.6, anchor=tkinter.CENTER)
+
+        self.adress = customtkinter.CTkEntry(self.frame, placeholder_text="Adress",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.adress.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
+
+        self.create=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.create_account())
+        self.create.place(relx=0.32, rely=0.9, anchor=tkinter.CENTER)
+
+        self.loogin=customtkinter.CTkButton(self.frame, text="Log in",width=120,fg_color="green",command=lambda:self.loogin())
+        self.loogin.place(relx=0.64, rely=0.9, anchor=tkinter.CENTER)
+
+    def create_account(self):
+
+        name = self.name.get()
+        email = self.email.get()
+        password = self.password.get()
+        age = self.age.get()
+        adress = self.adress.get()
+        permission = 0
+
+        cur.execute(f"SELECT * FROM member WHERE email='{email}'")
 
         if cur.rowcount > 0:
             messagebox.showerror("Error", "User already exists!")
             return
 
-        cur.execute(f"INSERT INTO member_customer (email, password) VALUES ('{email}', '{password}')")
+        cur.execute(f"INSERT INTO member (name, email, password, age, adress, permission) VALUES ('{name}', '{email}', '{password}', '{age}', '{adress}', '{permission}')")
         conn.commit()
         messagebox.showinfo("Success", "Account created successfully!")
-        conn.close()'''
+        conn.close()
 
-        
-        
-        
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+        self.frame.destroy()
+        bookingapp(self.app)
+
+    def loogin(self):
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+        self.frame.destroy()
+        login_gui(self.app)
+
+class AdminGUI:
+    def __init__(self, app):
+        self.app =app
+
+        self.frame=customtkinter.CTkFrame(master=self.app, width=500, height=500,border_color="#77B5FE",fg_color="white")
+        self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+
         
                 
 def main():
