@@ -10,11 +10,15 @@ from tkinter import messagebox
 
 
 customtkinter.set_appearance_mode("light")
-conn = pymysql.connect(host='localhost',user='root',password="",db='project_oop')
-cur = conn.cursor()
+
 def mysqlconnect(test):
+    conn = pymysql.connect(host='localhost',user='root',password="",db='project_oop')
+    cur = conn.cursor()
     cur.execute(test)
+    conn.commit()
     output = cur.fetchall()
+    cur.close()
+    conn.close()
     return(output)
 
 class FloatSpinbox(customtkinter.CTkFrame):
@@ -400,14 +404,14 @@ class AdminGUI:
         duration=self.time.get()
         number=self.spinbox_1.get()
         price=self.price.get()
+
         if depart=="" or arrival=="" or departd=="" or flightnumber=="" or takeoff=="" or duration=="" or price=="":
             messagebox.showerror("Error", "field is empty!")
         else:
-            request_sql_new_flight="INSERT INTO flight (flight_number, departure_airport, arrival_airport, departing, timings, take_off_time, place, price) VALUES ('"+flightnumber+"','"+depart+"', '"+arrival+"', '"+departd+"', '"+duration+"','"+takeoff+"', '"+number+"','"+price+"')"
-            new_flight=mysqlconnect( request_sql_new_flight)
+            request_sql_new_flight="INSERT INTO flight (flight_number, departure_airport, arrival_airport, departing, timings, take_off_time, place, price) VALUES ('"+flightnumber+"','"+depart+"', '"+arrival+"', '"+departd+"', '"+duration+"','"+takeoff+"', '"+str(number)+"','"+price+"')"
+            print(request_sql_new_flight)
+            mysqlconnect( request_sql_new_flight)
             messagebox.showinfo("Success", "Flight add successfully!")
-            conn.close()
-
 
                 
 def main():
