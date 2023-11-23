@@ -355,11 +355,6 @@ class CreateAccountGui:
 
 class AdminGUI:
     def __init__(self, app):
-        self.app =app
-
-        self.frame=customtkinter.CTkFrame(master=self.app, width=500, height=500,border_color="#77B5FE",fg_color="white")
-        self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
-
         
                 
 def main():
