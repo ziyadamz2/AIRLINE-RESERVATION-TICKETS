@@ -4,7 +4,6 @@ from tkinter import *
 from PIL import Image
 import tkinter
 from typing import Union, Callable
-
 import pymysql
 from CTkMessagebox import CTkMessagebox
 from tkinter import messagebox
@@ -82,16 +81,10 @@ class FloatSpinbox(customtkinter.CTkFrame):
 
 
 class login_gui:
-    def __init__(self,app):
-        self.app=app
-        self.app.title('AIRLINE RESERVATION TICKET')
-        self.app.state('zoomed')
+    def __init__(self,l1):
+        
 
-        self.background =customtkinter.CTkImage(Image.open("background.png"),size=(app.winfo_screenwidth(), app.winfo_screenheight()))
-        self.l1 = customtkinter.CTkLabel(master=app,image=self.background,text="")
-        self.l1.pack(fill='both', expand=True)
-
-
+        self.l1=l1
         self.frame=customtkinter.CTkFrame(master=self.l1, width=500, height=400,corner_radius=5,border_width=3,border_color="#77B5FE",fg_color="white")
         self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
@@ -104,7 +97,7 @@ class login_gui:
         self.password = customtkinter.CTkEntry(self.frame, placeholder_text="Password",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
         self.password.place(relx=0.5, rely=0.45, anchor=tkinter.CENTER)
         
-        self.login=customtkinter.CTkButton(self.frame, text="Login",width=120,fg_color="green",command=lambda:self.Login())
+        self.login=customtkinter.CTkButton(self.frame, text="Login",width=120,fg_color="green",command=lambda:self.Login(self.l1))
         self.login.place(relx=0.365, rely=0.58, anchor=tkinter.CENTER)
 
         self.creat_an_account=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.creat_account())
@@ -112,34 +105,42 @@ class login_gui:
 
         self.login_as_guest=customtkinter.CTkButton(self.frame, text="Login as a guest",command=lambda:self.logiin_as_guest())
         self.login_as_guest.place(relx=0.5, rely=0.69, anchor=tkinter.CENTER)
+        
 
         
-    def Login(self):
-        request_sql_connection="select * from member where email='"+str(self.email.get())+"' and password='"+str(self.password.get())+"'"
+    def Login(self,app):
+        self.app=app
+        email=str(self.email.get())
+        password=str(self.password.get())
+        request_sql_connection="select * from member where email='"+email+"' and password='"+password+"'"
         user=mysqlconnect(request_sql_connection)
         if len(user)==0:
-            messagebox.showerror('', 'Error: wrong email or password!')
+            messagebox.showerror('Error', 'Error: wrong email or password!')
         else:                                           #A MODIFIER
             for widget in self.frame.winfo_children():
                 widget.destroy()
             self.frame.destroy()
-            #request_sql_permission="SELECT permission FROM member"
-            #if request_sql_permission==1:
-            bookingapp(self.app)
-            #elif request_sql_permission==0: 
+            print(email)
+            request_sql_permission="SELECT permission FROM member WHERE email='"+email+"'"
+            permission=mysqlconnect(request_sql_permission)
+
+            if (permission[0][0]==1):
+                AdminGUI(self.l1)
+            else:
+                bookingapp(self.l1)
+
                 
     def logiin_as_guest(self):
         for widget in self.frame.winfo_children():
             widget.destroy()
         self.frame.destroy()
-        bookingapp(self.app)
+        bookingapp(self.l1)
     
     def creat_account(self):
-        
         for widget in self.frame.winfo_children():
             widget.destroy()
         self.frame.destroy()
-        CreateAccountGui(self.app)
+        CreateAccountGui(self.l1)
         
 
 
@@ -149,25 +150,22 @@ class bookingapp:
 
         self.frame=customtkinter.CTkFrame(master=self.app, width=1222, height=200,border_color="#77B5FE",fg_color="white")
         self.frame.place(relx=0.5, rely=0.19, anchor=tkinter.CENTER)
-        airport=["Paris", 
-                "London",
-                "Madrid",
-                "Franckfort",
-                "Amsterdam",
-                "Caire | CAI",
-                "Istanbul" ,
-                "Djibouti"
-                ]
+        request_sql_dairport="SELECT departure_airport FROM `flight`;"
+        dairport=mysqlconnect(request_sql_dairport)
+        airport=[item[0] for item in dairport]
 
-        
         self.departure_airport = customtkinter.StringVar()
         self.departure_airport.set("Select Departure Airport") 
         self.departure_airport = customtkinter.CTkComboBox(self.frame,values=airport,border_width=2,variable=self.departure_airport,width=200,border_color="#77B5FE",button_color="#77B5FE")
         self.departure_airport.place(relx=0.1, rely=0.4, anchor=tkinter.CENTER)
-        
+
+        request_sql_dairport="SELECT arrival_airport FROM `flight`"
+        a_airport=mysqlconnect(request_sql_dairport)
+        airport_a=[item[0] for item in a_airport]
+
         self.arrival_airport = customtkinter.StringVar()
         self.arrival_airport.set("Select Arrival Airport")
-        self.arrival_airport = customtkinter.CTkComboBox(self.frame,values=airport,border_width=2,variable=self.arrival_airport,width=200,border_color="#77B5FE",button_color="#77B5FE")
+        self.arrival_airport = customtkinter.CTkComboBox(self.frame,values=airport_a,border_width=2,variable=self.arrival_airport,width=200,border_color="#77B5FE",button_color="#77B5FE")
         self.arrival_airport.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)
                 
         self.Class = customtkinter.StringVar()
@@ -295,37 +293,131 @@ class CreateAccountGui:
 
     def __init__(self, app):
         
-        self.app = app
-        self.frame = customtkinter.CTkFrame(master=self.app, width=400, height=300, corner_radius=10)
+        self.app =app
+
+        self.frame=customtkinter.CTkFrame(master=self.app, width=500, height=500,border_color="#77B5FE",fg_color="white")
         self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
-        self.email_entry = customtkinter.CTkEntry(self.frame, placeholder_text="Email", width=250)
-        self.email_entry.place(relx=0.5, rely=0.3, anchor=tkinter.CENTER)
-        self.password_entry = customtkinter.CTkEntry(self.frame, placeholder_text="Password", show="*", width=250)
-        self.password_entry.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
-        self.create_btn = customtkinter.CTkButton(self.frame, text="Create Account", command=self.create_account)
-        self.create_btn.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
 
-    '''def create_account(self):
+        self.msg=customtkinter.CTkLabel(master=self.frame, text="Creating account",compound="top",font=("Apple Chancery, cursive",30 ),text_color="blue")
+        self.msg.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
 
-        cur.execute(f"SELECT * FROM member_customer WHERE email='{email}'")
+        self.name = customtkinter.CTkEntry(self.frame, placeholder_text="Name",width=250, height=35,font=("cursive",15 ),border_color="#859BF5",border_width=3)
+        self.name.place(relx=0.5, rely=0.3, anchor=tkinter.CENTER)
 
-        if cur.rowcount > 0:
-            messagebox.showerror("Error", "User already exists!")
-            return
+        self.email = customtkinter.CTkEntry(self.frame, placeholder_text="Email",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.email.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
 
-        cur.execute(f"INSERT INTO member_customer (email, password) VALUES ('{email}', '{password}')")
-        conn.commit()
-        messagebox.showinfo("Success", "Account created successfully!")
-        conn.close()'''
+        self.password = customtkinter.CTkEntry(self.frame, placeholder_text="Password",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.password.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
+        self.age = customtkinter.CTkEntry(self.frame, placeholder_text="Age",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.age.place(relx=0.5, rely=0.6, anchor=tkinter.CENTER)
+
+        self.adress = customtkinter.CTkEntry(self.frame, placeholder_text="Adress",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
+        self.adress.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
+
+        self.create=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.create_account())
+        self.create.place(relx=0.32, rely=0.9, anchor=tkinter.CENTER)
+
+        self.loogin=customtkinter.CTkButton(self.frame, text="Log in",width=120,fg_color="green",command=lambda:self.Login())
+        self.loogin.place(relx=0.64, rely=0.9, anchor=tkinter.CENTER)
+
+    def create_account(self):
+
+        name = self.name.get()
+        email = self.email.get()
+        password = self.password.get()
+        age = self.age.get()
+        adress = self.adress.get()
+        permission = 0
+        if name=="" or email=="" or age=="" or adress=="":
+            messagebox.showerror("Error", "field is empty!")
+        else:
+            request_sql_creat_member="SELECT * FROM member WHERE email='"+email+"'"
+            new_member=mysqlconnect(request_sql_creat_member)
+            if len(new_member) != 0:
+                messagebox.showerror("Error", "User already exists!")
+                return
+
+            request_sql_creat_member="INSERT INTO member (name, email, password, age, adress, permission) VALUES ('"+name+"', '"+email+"', '"+password+"', '"+age+"', '"+adress+"', 0)"
+
+            new_member=mysqlconnect(request_sql_creat_member)
+            messagebox.showinfo("Success", "Account created successfully!")
+            for widget in self.frame.winfo_children():
+                widget.destroy()
+            self.frame.destroy()
+            bookingapp(self.app)
+
+    def Login(self):
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+        self.frame.destroy()
+        login_gui(self.app)
+
+class AdminGUI:
+
+    def __init__(self, app):
+
+        self.app=app
         
+        self.frame=customtkinter.CTkFrame(master=self.app, width=1222, height=200,border_color="#77B5FE",fg_color="white")
+        self.frame.place(relx=0.5, rely=0.19, anchor=tkinter.CENTER)
         
+
+        self.departure_airport = customtkinter.CTkEntry(self.frame,border_width=2,width=200,border_color="#77B5FE",placeholder_text="Select Departure Airport")
+        self.departure_airport.place(relx=0.1, rely=0.4, anchor=tkinter.CENTER)
         
+        self.arrival_airport = customtkinter.CTkEntry(self.frame,border_width=2,width=200,border_color="#77B5FE",placeholder_text="Select Arrival Airport")
+        self.arrival_airport.place(relx=0.3, rely=0.4, anchor=tkinter.CENTER)        
         
+        self.departure_date =customtkinter.CTkEntry(self.frame, placeholder_text="departure date:yyyy-mm-dd",width=200,font=("cursive",15 ),border_color="#77B5FE",border_width=2)
+        self.departure_date.place(relx=0.5, rely=0.4, anchor=tkinter.CENTER)
+
+        self.time = customtkinter.CTkEntry(self.frame, placeholder_text="Time flight",width=200,font=("cursive",15 ),border_color="#77B5FE",border_width=2)
+        self.time.place(relx=0.7, rely=0.4, anchor=tkinter.CENTER)
+
+        self.takeoff = customtkinter.CTkEntry(self.frame, placeholder_text="Take off time",width=200,font=("cursive",15 ),border_color="#77B5FE",border_width=2)
+        self.takeoff.place(relx=0.7, rely=0.7, anchor=tkinter.CENTER)
+
+        self.number = customtkinter.CTkEntry(self.frame, placeholder_text="Flight number",width=200,font=("cursive",15 ),border_color="#77B5FE",border_width=2)
+        self.number.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
+        
+        self.price = customtkinter.CTkEntry(self.frame, placeholder_text="Price",width=200,font=("cursive",15 ),border_color="#77B5FE",border_width=2)
+        self.price.place(relx=0.3, rely=0.7, anchor=tkinter.CENTER)
+
+        self.spinbox_1 = FloatSpinbox(self.frame, width=140, step_size=1)
+        self.spinbox_1.place(relx=0.1, rely=0.7, anchor=tkinter.CENTER)
+
+        self.search=customtkinter.CTkButton(self.frame, text="ADD A FLIGHT",width=200,height=90,fg_color="red",font=("cursive",23 ),command=lambda:self.add(),corner_radius=10)
+        self.search.place(relx=0.89, rely=0.56, anchor=tkinter.CENTER)
+
+    def add(self):
+        depart=self.departure_airport.get()
+        arrival=self.arrival_airport.get()
+        departd=self.departure_date.get()
+        flightnumber=self.number.get()
+        takeoff=self.takeoff.get()
+        duration=self.time.get()
+        number=self.spinbox_1.get()
+        price=self.price.get()
+        if depart=="" or arrival=="" or departd=="" or flightnumber=="" or takeoff=="" or duration=="" or price=="":
+            messagebox.showerror("Error", "field is empty!")
+        else:
+            request_sql_new_flight="INSERT INTO flight (flight_number, departure_airport, arrival_airport, departing, timings, take_off_time, place, price) VALUES ('"+flightnumber+"','"+depart+"', '"+arrival+"', '"+departd+"', '"+duration+"','"+takeoff+"', '"+number+"','"+price+"')"
+            new_flight=mysqlconnect( request_sql_new_flight)
+            messagebox.showinfo("Success", "Flight add successfully!")
+            conn.close()
+
+
                 
 def main():
     app = tkinter.Tk()
-    app1 = login_gui(app)
+    app.title('AIRLINE RESERVATION TICKET')
+    app.state('zoomed')
+    background =customtkinter.CTkImage(Image.open("background.png"),size=(app.winfo_screenwidth(), app.winfo_screenheight()))
+    l1 = customtkinter.CTkLabel(master=app,image=background,text="")
+    l1.pack(fill='both', expand=True)
+    app1 = login_gui(l1)
     app.mainloop()
     
 if __name__ == "__main__":
