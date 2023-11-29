@@ -104,7 +104,7 @@ class login_gui:
         self.login=customtkinter.CTkButton(self.frame, text="Login",width=120,fg_color="green",command=lambda:self.Login(self.l1))
         self.login.place(relx=0.365, rely=0.58, anchor=tkinter.CENTER)
 
-        self.creat_an_account=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.creat_account())
+        self.creat_an_account=customtkinter.CTkButton(self.frame, text="Create an account",width=120,fg_color="red",command=lambda:self.creat_account())
         self.creat_an_account.place(relx=0.64, rely=0.58, anchor=tkinter.CENTER)
 
         self.login_as_guest=customtkinter.CTkButton(self.frame, text="Login as a guest",command=lambda:self.logiin_as_guest())
@@ -144,7 +144,8 @@ class login_gui:
         for widget in self.frame.winfo_children():
             widget.destroy()
         self.frame.destroy()
-        CreateAccountGui(self.l1)
+        #bookGUI(self.l1,'500','7','4','1','4')
+        HistoricGUI(self.l1,7)
         
 
 
@@ -219,7 +220,7 @@ class bookingapp:
                 for i in range(len(flight_departure)):
                     self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                     self.frame_flight.grid(row=i,padx=10, pady=10)
-                    self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8]+flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                    self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8]+flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8]+flight_arrival[i][8],self.spinbox_1.get()))
                     self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER)                    
                     self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                     self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -230,7 +231,7 @@ class bookingapp:
                     for i in range(len(flight_departure)):
                         self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                         self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],self.spinbox_1.get()))
                         self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER)      
                         self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                         self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -240,7 +241,7 @@ class bookingapp:
                     for i in range(len(flight_arrival)):
                         self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                         self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_arrival[i][8],self.spinbox_1.get()))
                         self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER) 
                         self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                         self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -252,7 +253,7 @@ class bookingapp:
                     for i in range(len(flight_arrival)):
                         self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                         self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8]+flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8]+flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i: self.booking(flight_departure[i][8] + flight_arrival[i][8],self.spinbox_1.get()))
                         self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER) 
                         self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                         self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -261,7 +262,7 @@ class bookingapp:
                     for i in range(len(flight_arrival),len(flight_departure)):
                         self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                         self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],self.spinbox_1.get()))
                         self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
                         self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                         self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -271,7 +272,7 @@ class bookingapp:
                     for i in range(len(flight_departure)):
                         self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                         self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking(flight_departure[8],self.spinbox_1.get()))
                         self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
                         self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                         self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -280,7 +281,7 @@ class bookingapp:
                     for i in range(len(flight_departure),len(flight_arrival)):
                         self.frame_flight = customtkinter.CTkFrame(self.frame_booking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                         self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=25,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking())
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=25,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking(flight_departure[8],self.spinbox_1.get()))
                         self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
                         self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
                         self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
@@ -288,9 +289,11 @@ class bookingapp:
                         self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)        
         return
     
-    def booking(self):
-        "Payment"
-        return
+    def booking(self,price,number):
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+        self.frame.destroy()
+        bookGUI(self.app,price,number)
     
 
 class CreateAccountGui:
@@ -320,7 +323,7 @@ class CreateAccountGui:
         self.adress = customtkinter.CTkEntry(self.frame, placeholder_text="Adress",width=250, height=35,font=("cursive",17 ),border_color="#859BF5",border_width=3)
         self.adress.place(relx=0.5, rely=0.7, anchor=tkinter.CENTER)
 
-        self.create=customtkinter.CTkButton(self.frame, text="Creat an account",width=120,fg_color="red",command=lambda:self.create_account())
+        self.create=customtkinter.CTkButton(self.frame, text="Create an account",width=120,fg_color="red",command=lambda:self.create_account())
         self.create.place(relx=0.32, rely=0.9, anchor=tkinter.CENTER)
 
         self.loogin=customtkinter.CTkButton(self.frame, text="Log in",width=120,fg_color="green",command=lambda:self.Login())
@@ -394,7 +397,12 @@ class AdminGUI:
 
         self.search=customtkinter.CTkButton(self.frame, text="ADD A FLIGHT",width=200,height=90,fg_color="red",font=("cursive",23 ),command=lambda:self.add(),corner_radius=10)
         self.search.place(relx=0.89, rely=0.56, anchor=tkinter.CENTER)
-
+    
+        vendu=mysqlconnect("SELECT flight.arrival_airport,flight.departure_airport,  SUM(historique.number) AS number, (flight.place+ SUM(historique.number)) FROM flight, historique Where flight.flight_id=historique.flight_id GROUP BY flight.flight_id")
+        print(vendu)
+        
+        
+        
     def add(self):
         depart=self.departure_airport.get()
         arrival=self.arrival_airport.get()
@@ -413,6 +421,88 @@ class AdminGUI:
             mysqlconnect( request_sql_new_flight)
             messagebox.showinfo("Success", "Flight add successfully!")
 
+class bookGUI:
+    def __init__(self,app,price,member_id,number,flight_id1,flight_id2):
+
+        self.app =app
+
+        price=int(price)*int(number)
+
+        self.frame=customtkinter.CTkFrame(master=self.app, width=500, height=500,border_color="#77B5FE",fg_color="white")
+        self.frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+
+        self.msg=customtkinter.CTkLabel(master=self.frame, text="Booking a flight",compound="top",font=("Arial, Helvetica, sans-serif", 30), text_color="#0066cc")
+        self.msg.place(relx=0.5, rely=0.1, anchor=tkinter.CENTER)
+
+        self.price=customtkinter.CTkLabel(master=self.frame,text=f"Price: ${price}", text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 30))
+        self.price.place(relx=0.25,rely=0.3, anchor=tkinter.CENTER)
+
+        self.promotion=customtkinter.CTkLabel(master=self.frame,text='Promotion: ',text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 20))
+        self.promotion.place(relx=0.5,rely=0.4, anchor=tkinter.CENTER)
+
+        request_sql_age="SELECT age FROM member WHERE member_id='"+member_id+"'"
+        age=mysqlconnect(request_sql_age)
+        if (age[0][0]<22):
+
+            price=int(price)*0.8
+            self.promotiont=customtkinter.CTkLabel(master=self.frame,text='Promotion of 20%. The new price is: ',text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 20))
+            self.promotiont.place(relx=0.4,rely=0.5, anchor=tkinter.CENTER)
+
+            self.pricet=customtkinter.CTkLabel(master=self.frame,text=price,text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 20))
+            self.pricet.place(relx=0.5,rely=0.6, anchor=tkinter.CENTER)
+
+        elif (age[0][0]>21 & age[0][0]<67):
+
+            self.promotiont=customtkinter.CTkLabel(master=self.frame,text="There is no promotion.",text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 20))
+            self.promotiont.place(relx=0.15,rely=0.5, anchor=tkinter.CENTER)
+
+        else:
+
+            price=int(price)*0.8
+            self.promotiont=customtkinter.CTkLabel(master=self.frame,text='Promotion of 20%. The new price is: ',text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 20))
+            self.promotiont.place(relx=0.3,rely=0.5, anchor=tkinter.CENTER)
+
+            self.pricet=customtkinter.CTkLabel(master=self.frame,text=price,text_color="#0066cc",font=("Arial, Helvetica, sans-serif", 20))
+            self.pricet.place(relx=0.5,rely=0.6, anchor=tkinter.CENTER)
+        
+        self.search=customtkinter.CTkButton(self.frame, text="PAY",width=200,height=90,fg_color="red",font=("cursive",23 ),command=lambda:self.payer(flight_id1,flight_id2,member_id,number),corner_radius=10)
+        self.search.place(relx=0.5, rely=0.8, anchor=tkinter.CENTER)
+
+
+    def payer(self,flight_id1,flight_id2,member_id,number):
+
+        request_historic1= (f"INSERT INTO historique (member_id,flight_id,number) VALUES ('{member_id}','{flight_id1}','{number}')")
+        request_historic2= (f"INSERT INTO historique (member_id,flight_id,number) VALUES ('{member_id}','{flight_id2}','{number}')")
+        mysqlconnect(request_historic1)
+        mysqlconnect(request_historic2)
+        request_number1= (f"UPDATE flight SET place=place - '{number}' WHERE flight_id = '{flight_id1}' ")
+        request_number2= (f"UPDATE flight SET place=place - '{number}' WHERE flight_id = '{flight_id2}' ")
+        mysqlconnect(request_number1)
+        mysqlconnect(request_number2)
+
+
+class HistoricGUI:
+    def __init__(self, app, member_id):
+        self.app = app
+        self.member_id = member_id
+        self.title = customtkinter.CTkLabel(self.app, width=1222, height=60,text="Historic Flights", text_color="white",font=("cursive",30 ), fg_color="#5077F5")
+        self.title.place(relx=0.5, rely=0.2, anchor=tkinter.CENTER)
+        
+        self.frame=customtkinter.CTkScrollableFrame(master=self.app, width=1200, height=500,border_color="#77B5FE",fg_color="white")
+        self.frame.place(relx=0.5, rely=0.55, anchor=tkinter.CENTER)
+        
+
+        self.afficher_historique()
+
+    def afficher_historique(self):
+        sql_query ="SELECT flight_id,number FROM historique WHERE member_id ="+str(self.member_id)
+        historique_vols = mysqlconnect(sql_query)
+        for i in range(0,len(historique_vols)):
+                flight_departure=mysqlconnect("Select * from flight where flight_id="+str(historique_vols[i][0]))[0]
+                self.frame_flight = customtkinter.CTkFrame(self.frame,width=1180,height=60,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                self.frame_flight.grid(row=i,padx=10, pady=10)                
+                self.info_flight = customtkinter.CTkLabel(self.frame_flight, text=str(historique_vols[i][1])+" flight(s) for "+flight_departure[2]+" to "+flight_departure[3]+" take off time the "+str(flight_departure[4])+" at "+str(flight_departure[6])[:-3]+" flight time "+str(flight_departure[5]), text_color="black",font=("cursive",25),fg_color="transparent")
+                self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
                 
 def main():
     app = tkinter.Tk()
