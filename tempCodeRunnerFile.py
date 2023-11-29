@@ -1,1 +1,1 @@
-departd=self.d
+"Select * from flight where flight_id="
