@@ -242,75 +242,97 @@ class bookingapp:
                 self.bar.grid(row=1, column=2,padx=400)
             elif len(flight_departure)==len(flight_arrival):
                 for i in range(len(flight_departure)):
-                    self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                    self.frame_flight.grid(row=i,padx=10, pady=10)
-                    self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8]+flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8]+flight_arrival[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],flight_arrival[i][0]))
-                    self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER)                    
-                    self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                    self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                    self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5])+"\n"+flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
-                    self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+                    if (flight_departure[i][7]-self.spinbox_1.get()<=0 or flight_arrival[i][7]-self.spinbox_1.get()<=0):
+                        pass                        
+                    else:
+                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                        self.frame_flight.grid(row=i,padx=10, pady=10)
+                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8]+flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8]+flight_arrival[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],flight_arrival[i][0]))
+                        self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER)                    
+                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5])+"\n"+flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
+                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
             elif len(flight_departure)==0 or len(flight_arrival)==0:
                 if len(flight_arrival)==0:
                     for i in range(len(flight_departure)):
-                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                        self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
-                        self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER)      
-                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
-                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+                        if (flight_departure[i][7]-self.spinbox_1.get()<=0):
+                            pass                        
+                        else:
+                            self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                            self.frame_flight.grid(row=i,padx=10, pady=10)
+                            self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
+                            self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER)      
+                            self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                            self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                            self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
+                            self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
                 else:
                     for i in range(len(flight_arrival)):
-                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                        self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
-                        self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER) 
-                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
-                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+                        if (flight_arrival[i][7]-self.spinbox_1.get()<=0):
+                            pass                        
+                        else:
+                            self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                            self.frame_flight.grid(row=i,padx=10, pady=10)
+                            self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
+                            self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER) 
+                            self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                            self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                            self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
+                            self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
             
             else:
                 if len(flight_departure)>len(flight_arrival):
+                    
                     for i in range(len(flight_arrival)):
-                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                        self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8]+flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i: self.booking(flight_departure[i][8] + flight_arrival[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],flight_arrival[i][0]))
-                        self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER) 
-                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5])+"\n"+flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
-                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+                        if (flight_arrival[i][7]-self.spinbox_1.get()<=0):
+                            pass                        
+                        else:
+                            self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                            self.frame_flight.grid(row=i,padx=10, pady=10)
+                            self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_arrival[i][8]+flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i: self.booking(flight_departure[i][8] + flight_arrival[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],flight_arrival[i][0]))
+                            self.book.place(relx=0.903, rely=0.5, anchor=tkinter.CENTER) 
+                            self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                            self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                            self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5])+"\n"+flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
+                            self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
                     for i in range(len(flight_arrival),len(flight_departure)):
-                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                        self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
-                        self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
-                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
-                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)  
+                        if (flight_departure[i][7]-self.spinbox_1.get()<=0):
+                            pass                        
+                        else:
+                            self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                            self.frame_flight.grid(row=i,padx=10, pady=10)
+                            self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[i][8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda i=i:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
+                            self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
+                            self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                            self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                            self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
+                            self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)  
                 else:
                     for i in range(len(flight_departure)):
-                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                        self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
-                        self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
-                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5])+"\n"+flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
-                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+                        if (flight_departure[i][7]-self.spinbox_1.get()<=0):
+                            pass                        
+                        else:
+                            self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                            self.frame_flight.grid(row=i,padx=10, pady=10)
+                            self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=60,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
+                            self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
+                            self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                            self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                            self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_departure[i][2]+" to "+flight_departure[i][3]+" take off time the "+str(flight_departure[i][4])+" at "+str(flight_departure[i][6])[:-3]+" flight time "+str(flight_departure[i][5])+"\n"+flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+str(flight_arrival[i][5]), text_color="black",font=("cursive",25 ),fg_color="transparent")
+                            self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
                     for i in range(len(flight_departure),len(flight_arrival)):
-                        self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
-                        self.frame_flight.grid(row=i,padx=10, pady=10)
-                        self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=25,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
-                        self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
-                        self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
-                        self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
-                        self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+flight_arrival[i][5], text_color="black",font=("cursive",25 ),fg_color="transparent")
-                        self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)        
+                        if (flight_departure[i][7]-self.spinbox_1.get()<=0):
+                            pass                        
+                        else:
+                            self.frame_flight = customtkinter.CTkFrame(self.framebooking,width=1180,height=80,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
+                            self.frame_flight.grid(row=i,padx=10, pady=10)
+                            self.book=customtkinter.CTkButton(self.frame_flight, text="Book for "+str(flight_departure[8])+" £/pp",width=200,height=25,corner_radius=0,fg_color="red",font=("cursive",20 ),border_width=1,command=lambda:self.booking(flight_departure[i][8],member_id,self.spinbox_1.get(),flight_departure[i][0],'0'))
+                            self.book.place(relx=0.906, rely=0.5, anchor=tkinter.CENTER)
+                            self.frame_info_flight = customtkinter.CTkFrame(self.frame_flight,width=950,height=60,corner_radius=0,border_width=2, border_color="#968080",fg_color="white")
+                            self.frame_info_flight.place(relx=0.41, rely=0.5, anchor=tkinter.CENTER)
+                            self.info_flight = customtkinter.CTkLabel(self.frame_info_flight, text=flight_arrival[i][2]+" to "+flight_arrival[i][3]+" take off time the "+str(flight_arrival[i][4])+" at "+str(flight_arrival[i][6])[:-3]+" flight time "+flight_arrival[i][5], text_color="black",font=("cursive",25 ),fg_color="transparent")
+                            self.info_flight.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)        
         return
     
     def booking(self,price,member_id,number,flight_id1,flight_id2):
@@ -323,7 +345,6 @@ class bookingapp:
         bookGUI(self.app,price,member_id,number,flight_id1,flight_id2)
 
     def historique(self,member_id):
-        print(member_id)
         if member_id=='0':
             messagebox.showerror('', 'Error: Your are not log')
             return
@@ -606,12 +627,12 @@ class HistoricGUI:
 
     def afficher_historique(self):
         
-        sql_query ="SELECT flight_id,number FROM historique WHERE member_id ="+str(self.member_id)
+        sql_query ="SELECT flight_id,sum(number) as number FROM `historique` WHERE member_id ="+str(self.member_id)+" group BY flight_id"
         historique_vols = mysqlconnect(sql_query)
         if len(historique_vols)!=0:
             for i in range(0,len(historique_vols)):
                     flight_departure=mysqlconnect("Select * from flight where flight_id="+str(historique_vols[i][0]))
-
+                    print(flight_departure)
                     self.frame_flight = customtkinter.CTkFrame(self.frameee,width=1180,height=60,corner_radius=0,border_width=4, border_color="#968080",fg_color="white")
                     self.frame_flight.grid(row=i,padx=10, pady=10)                
                     self.info_flight = customtkinter.CTkLabel(self.frame_flight, text=str(historique_vols[i][1])+" flight(s) for "+flight_departure[0][2]+" to "+flight_departure[0][3]+" take off time the "+str(flight_departure[0][4])+" at "+str(flight_departure[0][6])[:-3]+" flight time "+str(flight_departure[0][5]), text_color="black",font=("cursive",25),fg_color="transparent")
