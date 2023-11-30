@@ -629,7 +629,7 @@ class HistoricGUI:
         
         sql_query ="SELECT flight_id,sum(number) as number FROM `historique` WHERE member_id ="+str(self.member_id)+" group BY flight_id"
         historique_vols = mysqlconnect(sql_query)
-        if len(historique_vols)!=0:
+        if len(historique_vols)!=0: 
             for i in range(0,len(historique_vols)):
                     flight_departure=mysqlconnect("Select * from flight where flight_id="+str(historique_vols[i][0]))
                     print(flight_departure)
