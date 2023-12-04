@@ -58,7 +58,7 @@ class FloatSpinbox(customtkinter.CTkFrame):
             self.entry.insert(0, "0")
         self.x=False
         if self.command is not None:
-            self.command()
+            self.command() 
             
         try:
             value = int(self.entry.get()) + int(self.step_size)
